@@ -26,5 +26,6 @@
       "username": "dbuser",
       "password": "thisIsReallyStrongPassword123"
     }
-  ]
+  ],
+  "kotlin.debugAdapter.enabled": false
 }
