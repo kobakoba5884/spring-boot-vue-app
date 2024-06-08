@@ -10,7 +10,7 @@ services:
         USER_GROUP_NAME: ${USER_GROUP_NAME:-workspace}
         USER_UID: ${USER_UID:-1000}
         USER_GID: ${USER_GID:-1000}
-        JAVA_VERSION: ${JAVA_VERSION:-22.0.1-amzn}
+        JAVA_VERSION: ${JAVA_VERSION:-17.0.11-amzn}
         GRADLE_VERSION: ${GRADLE_VERSION:-8.8}
         KOTLIN_VERSION: ${KOTLIN_VERSION:-2.0.0}
         LOCALE: ${LOCALE:-ja_JP.UTF-8}
