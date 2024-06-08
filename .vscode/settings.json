@@ -1,0 +1,30 @@
+{
+  "cSpell.words": [
+    "amazonwebservices",
+    "azuretools",
+    "esbenp",
+    "fwcd",
+    "initializr",
+    "liveshare",
+    "mathiasfrohlich",
+    "mtxr",
+    "oderwat",
+    "println",
+    "rangav",
+    "sqltools",
+    "vscjava"
+  ],
+  "java.compile.nullAnalysis.mode": "automatic",
+  "sqltools.connections": [
+    {
+      "previewLimit": 50,
+      "server": "postgres",
+      "port": 5432,
+      "driver": "PostgreSQL",
+      "name": "docker-posgres",
+      "database": "dev",
+      "username": "dbuser",
+      "password": "thisIsReallyStrongPassword123"
+    }
+  ]
+}

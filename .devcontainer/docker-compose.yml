@@ -1,0 +1,38 @@
+version: "3.9"
+
+services:
+  workspace:
+    container_name: ${PROJECT_NAME:-original}-workspace
+    build:
+      context: ./docker/workspace
+      args:
+        USER_NAME: ${USER_NAME:-vscode}
+        USER_GROUP_NAME: ${USER_GROUP_NAME:-workspace}
+        USER_UID: ${USER_UID:-1000}
+        USER_GID: ${USER_GID:-1000}
+        JAVA_VERSION: ${JAVA_VERSION:-22.0.1-amzn}
+        GRADLE_VERSION: ${GRADLE_VERSION:-8.8}
+        KOTLIN_VERSION: ${KOTLIN_VERSION:-2.0.0}
+        LOCALE: ${LOCALE:-ja_JP.UTF-8}
+    tty: true
+    environment:
+      TZ: ${TIME_ZONE:-Asia/Tokyo}
+    volumes:
+      - ../:/home/${USER_NAME:-vscode}/workspace:cached
+      - ~/.aws:/home/${USER_NAME:-vscode}/.aws
+      - ~/.gitconfig:/home/${USER_NAME:-vscode}/.gitconfig
+    ports:
+      - ${WORKSPACE_PORT:-9999}:9999
+
+  postgres:
+    container_name: ${PROJECT_NAME:-original}-postgres
+    image: postgres:10
+    environment:
+      POSTGRES_USER: ${DB_USER:-dbuser}
+      POSTGRES_PASSWORD: ${DB_PASSWORD:-thisIsReallyStrongPassword123}
+      POSTGRES_DB: ${DB_NAME:-dev}
+    ports:
+      - ${POSTGRES_PORT:-5432}:5432
+    volumes:
+      - ../.docker/postgres:/var/lib/postgresql/data/
+    restart: unless-stopped

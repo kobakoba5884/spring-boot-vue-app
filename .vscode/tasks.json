@@ -1,0 +1,45 @@
+{
+  "version": "2.0.0",
+  "tasks": [
+    {
+      "label": "build",
+      "type": "shell",
+      "command": "./gradlew",
+      "args": ["build"],
+      "group": {
+        "kind": "build",
+        "isDefault": true
+      },
+      "presentation": {
+        "echo": true,
+        "reveal": "always",
+        "focus": false,
+        "panel": "shared"
+      },
+      "problemMatcher": [],
+      "options": {
+        "cwd": "${workspaceFolder}/hello-world-api"
+      }
+    },
+    {
+      "label": "bootRun",
+      "type": "shell",
+      "command": "./gradlew",
+      "args": ["bootRun"],
+      "group": {
+        "kind": "build",
+        "isDefault": false
+      },
+      "presentation": {
+        "echo": true,
+        "reveal": "always",
+        "focus": false,
+        "panel": "shared"
+      },
+      "problemMatcher": [],
+      "options": {
+        "cwd": "${workspaceFolder}/hello-world-api"
+      }
+    }
+  ]
+}
