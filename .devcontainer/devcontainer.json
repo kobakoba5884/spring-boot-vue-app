@@ -37,7 +37,8 @@
         "GitHub.vscode-pull-request-github",
         "vmware.vscode-boot-dev-pack",
         "fwcd.kotlin",
-        "humao.rest-client"
+        "humao.rest-client",
+        "inferrinizzard.prettier-sql-vscode"
       ]
     }
   }
