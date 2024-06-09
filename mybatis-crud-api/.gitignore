@@ -38,3 +38,7 @@ out/
 
 ### Kotlin ###
 .kotlin
+
+### generateMyBatis ###
+/src/main/kotlin/com/minmin/mybatis_crud_api/gen/*
+!/src/main/kotlin/com/minmin/mybatis_crud_api/gen/.gitkeep

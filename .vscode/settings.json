@@ -40,6 +40,7 @@
   "kotlin.compiler.jvm.target": "17",
   "kotlin.externalSources.autoConvertToKotlin": true,
   "rest-client.environmentVariables": {
+
     "$shared": {
       "version": "v1",
       "email": "hoge@xxx.com"
