@@ -2,7 +2,7 @@ spring:
   application:
     name: hello-world-api
   devtools:
-    restart:
-      enabled: true
     livereload:
+      enabled: true
+    restart:
       enabled: true

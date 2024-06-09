@@ -35,5 +35,19 @@
   "kotlin.languageServer.debugAttach.enabled": false,
   "kotlin.languageServer.debugAttach.autoSuspend": false,
   "kotlin.compiler.jvm.target": "17",
-  "kotlin.externalSources.autoConvertToKotlin": true
+  "kotlin.externalSources.autoConvertToKotlin": true,
+  "rest-client.environmentVariables": {
+    "$shared": {
+      "version": "v1",
+      "email": "hoge@xxx.com"
+    },
+    "dev": {
+      "hostname": "localhost",
+      "port": "8080",
+      "version": "v1"
+    },
+    "prod": {
+      "hostname": "prod.hoge.jp"
+    }
+  }
 }
