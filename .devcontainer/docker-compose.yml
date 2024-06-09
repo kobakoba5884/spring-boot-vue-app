@@ -17,6 +17,10 @@ services:
     tty: true
     environment:
       TZ: ${TIME_ZONE:-Asia/Tokyo}
+      DB_NAME: ${DB_NAME:-dev}
+      DB_USER: ${DB_USER:-dbuser}
+      DB_PASSWORD: ${DB_PASSWORD:-thisIsReallyStrongPassword123}
+      DB_ROOT_PASSWORD: ${DB_ROOT_PASSWORD:-thisIsReallyStrongPassword123}
     volumes:
       - ../:/home/${USER_NAME:-vscode}/workspace:cached
       - ~/.aws:/home/${USER_NAME:-vscode}/.aws
