@@ -38,7 +38,8 @@
         "vmware.vscode-boot-dev-pack",
         "fwcd.kotlin",
         "humao.rest-client",
-        "inferrinizzard.prettier-sql-vscode"
+        "inferrinizzard.prettier-sql-vscode",
+        "redhat.vscode-xml"
       ]
     }
   }

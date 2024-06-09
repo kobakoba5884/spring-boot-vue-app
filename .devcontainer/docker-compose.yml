@@ -17,10 +17,14 @@ services:
     tty: true
     environment:
       TZ: ${TIME_ZONE:-Asia/Tokyo}
+      DB_HOST: ${DB_HOST:-postgres}
+      DB_PORT: ${DB_PORT:-5432}
       DB_NAME: ${DB_NAME:-dev}
       DB_USER: ${DB_USER:-dbuser}
+      DB_URL: "jdbc:postgresql://${DB_HOST}:${DB_PORT}/${DB_NAME}"
       DB_PASSWORD: ${DB_PASSWORD:-thisIsReallyStrongPassword123}
       DB_ROOT_PASSWORD: ${DB_ROOT_PASSWORD:-thisIsReallyStrongPassword123}
+      DB_DRIVER: ${DB_DRIVER:-org.postgresql.Driver}
     volumes:
       - ../:/home/${USER_NAME:-vscode}/workspace:cached
       - ~/.aws:/home/${USER_NAME:-vscode}/.aws
@@ -36,7 +40,7 @@ services:
       POSTGRES_PASSWORD: ${DB_PASSWORD:-thisIsReallyStrongPassword123}
       POSTGRES_DB: ${DB_NAME:-dev}
     ports:
-      - ${POSTGRES_PORT:-5432}:5432
+      - ${DB_PORT:-5432}:5432
     volumes:
       - ../.docker/postgres:/var/lib/postgresql/data/
       - ./docker/postgres/init:/docker-entrypoint-initdb.d/
