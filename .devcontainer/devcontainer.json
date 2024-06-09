@@ -24,7 +24,6 @@
       "extensions": [
         "vscjava.vscode-java-pack",
         "vscjava.vscode-gradle",
-        "rangav.vscode-thunder-client",
         "mtxr.sqltools",
         "ms-vsliveshare.vsliveshare",
         "mtxr.sqltools-driver-pg",
@@ -37,7 +36,8 @@
         "oderwat.indent-rainbow",
         "GitHub.vscode-pull-request-github",
         "vmware.vscode-boot-dev-pack",
-        "fwcd.kotlin"
+        "fwcd.kotlin",
+        "humao.rest-client"
       ]
     }
   }
