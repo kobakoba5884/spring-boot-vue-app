@@ -1,21 +1,10 @@
 @host = {{hostname}}:{{port}}
-
-# / GET request
-GET http://{{host}}/api/v1/
-Accept: text/plain
-
-###
+@endpoint = http://{{host}}/api/v1/greeter
+@name = minmin
 
 # / GET request
 
-@name = min
-
-GET http://{{host}}/api/v1/hello?name={{name}}
-Accept: application/json
-
-###
-
-GET http://{{host}}/api/v1/hello/{{name}}
+GET {{endpoint}}/hello/byservice/{{name}}
 Accept: application/json
 
 ###
