@@ -27,5 +27,12 @@
       "password": "thisIsReallyStrongPassword123"
     }
   ],
-  "kotlin.debugAdapter.enabled": false
+  "kotlin.debugAdapter.enabled": false,
+  "kotlin.languageServer.enabled": true,
+  "kotlin.languageServer.debugAttach.port": 5009,
+  "kotlin.languageServer.port": 5010,
+  "kotlin.languageServer.debugAttach.enabled": false,
+  "kotlin.languageServer.debugAttach.autoSuspend": false,
+  "kotlin.compiler.jvm.target": "17",
+  "kotlin.externalSources.autoConvertToKotlin": true
 }
