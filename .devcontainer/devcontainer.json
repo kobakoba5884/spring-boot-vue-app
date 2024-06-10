@@ -1,0 +1,46 @@
+{
+  "name": "kotlin-workspace",
+  "dockerComposeFile": ["docker-compose.yml"],
+  "service": "workspace",
+  "workspaceFolder": "/home/vscode/workspace",
+  "remoteUser": "vscode",
+  "shutdownAction": "stopCompose",
+  // https://github.com/redhat-developer/vscode-java/issues/1156
+  "customizations": {
+    "vscode": {
+      "settings": {
+        "files.eol": "\n",
+        "java.import.exclusions": ["**/.docker"],
+        "thunder-client.saveToWorkspace": true,
+        "java.configuration.updateBuildConfiguration": "automatic",
+        // https://github.com/MicrosoftDocs/live-share/issues/3121
+        "liveshare.allowGuestDebugControl": true,
+        "liveshare.allowGuestTaskControl": true,
+        "liveshare.languages.allowGuestCommandControl": true,
+        "liveshare.publishWorkspaceInfo": true,
+        "liveshare.autoShareTerminals": true
+      },
+      "postCreateCommand": "./setup-git.sh",
+      "extensions": [
+        "vscjava.vscode-java-pack",
+        "vscjava.vscode-gradle",
+        "mtxr.sqltools",
+        "ms-vsliveshare.vsliveshare",
+        "mtxr.sqltools-driver-pg",
+        "ms-vscode.live-server",
+        "amazonwebservices.aws-toolkit-vscode",
+        "mtxr.sqltools-driver-mysql",
+        "esbenp.prettier-vscode",
+        "streetsidesoftware.code-spell-checker",
+        "ms-azuretools.vscode-docker",
+        "oderwat.indent-rainbow",
+        "GitHub.vscode-pull-request-github",
+        "vmware.vscode-boot-dev-pack",
+        "fwcd.kotlin",
+        "humao.rest-client",
+        "inferrinizzard.prettier-sql-vscode",
+        "redhat.vscode-xml"
+      ]
+    }
+  }
+}

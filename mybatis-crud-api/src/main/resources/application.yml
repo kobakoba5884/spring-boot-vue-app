@@ -1,0 +1,13 @@
+spring:
+  application:
+    name: mybatis-crud-api
+  devtools:
+    livereload:
+      enabled: true
+    restart:
+      enabled: true
+  datasource:
+    url: ${DB_URL:jdbc:postgresql://${DB_HOST:postgres}:${DB_PORT:5432}/${DB_NAME:dev}}
+    username: ${DB_USER:dbuser}
+    password: ${DB_PASSWORD:thisIsReallyStrongPassword123}
+    driver-class-name: ${DB_DRIVER:org.postgresql.Driver}

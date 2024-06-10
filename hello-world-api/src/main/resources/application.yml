@@ -1,0 +1,8 @@
+spring:
+  application:
+    name: hello-world-api
+  devtools:
+    livereload:
+      enabled: true
+    restart:
+      enabled: true

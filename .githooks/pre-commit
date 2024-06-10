@@ -1,0 +1,17 @@
+#!/bin/bash
+
+DEVCONTAINER_DIR=".devcontainer"
+
+# https://gist.github.com/linhmtran168/2286aeafe747e78f53bf
+echo "cp start"
+
+cp "${DEVCONTAINER_DIR}/.env" "${DEVCONTAINER_DIR}/.env.example"
+
+if [ $? -eq 0 ]; then
+    echo "COMMIT SUCCEEDED"
+else
+    echo "Please try again."
+    exit 1
+fi
+
+exit $?
