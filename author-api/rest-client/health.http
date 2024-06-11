@@ -1,0 +1,10 @@
+@host = {{hostname}}:8080
+@endpoint = http://{{host}}/health
+@name = minmin
+
+# / GET request
+
+GET {{endpoint}}
+Accept: text/plain
+
+###
