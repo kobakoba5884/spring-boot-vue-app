@@ -33,5 +33,27 @@
     "prod": {
       "hostname": "prod.hoge.jp"
     }
-  }
+  },
+  "sqltools.connections": [
+    {
+      "previewLimit": 50,
+      "server": "postgres",
+      "port": 5432,
+      "driver": "PostgreSQL",
+      "name": "docker-posgres",
+      "database": "dev",
+      "username": "dbuser",
+      "password": "thisIsReallyStrongPassword123"
+    },
+    {
+      "previewLimit": 50,
+      "server": "author-api-postgres",
+      "port": 5432,
+      "driver": "PostgreSQL",
+      "name": "author-api-posgres",
+      "database": "dev",
+      "username": "dbuser",
+      "password": "thisIsReallyStrongPassword123"
+    }
+  ]
 }
