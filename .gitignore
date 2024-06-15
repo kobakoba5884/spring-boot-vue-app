@@ -32,4 +32,5 @@ gradlew*
 .docker/
 
 # git
+temp/
 !temp/.gitkeep
