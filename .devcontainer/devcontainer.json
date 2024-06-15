@@ -48,7 +48,8 @@
         "vmware.vscode-boot-dev-pack",
         "humao.rest-client",
         "redhat.vscode-xml",
-        "fwcd.kotlin"
+        "fwcd.kotlin",
+        "esbenp.prettier-vscode"
       ]
     }
   }
