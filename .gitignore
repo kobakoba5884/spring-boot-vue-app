@@ -30,3 +30,6 @@ gradlew*
 # devcontainer
 .devcontainer/.env
 .docker/
+
+# git
+!temp/.gitkeep
