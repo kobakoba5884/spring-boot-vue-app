@@ -1,9 +1,18 @@
 #!/bin/bash
 
-git config --add safe.directory "${HOME}/workspace"
+git config --global --add safe.directory "${HOME}/workspace"
 
-git config init.defaultBranch main
+git config --global init.defaultBranch main
+
+git config --global user.name "${GIT_USER}"
+
+git config --global user.email "${GIT_EMAIL}"
+
+git config --global core.editor "code --wait"
+
+git config commit.template "${HOME}/workspace/commitTemplate.txt"
 
 git config core.hooksPath "${HOME}/workspace/.githooks"
 
 chmod +x ../.githooks/pre-commit
+
