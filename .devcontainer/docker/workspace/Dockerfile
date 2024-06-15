@@ -31,14 +31,6 @@ USER ${USER_NAME}
 
 ENV HOME=/home/${USER_NAME}
 
-# ---------------------------------- enable git ----------------------------------
-
-# https://github.com/devcontainers/cli/issues/98
-# change to main branch https://dev-yakuza.posstree.com/git/default-branch/
-# RUN git config --global --add safe.directory "${HOME}/workspace" \
-#     && git config --global init.defaultBranch main \
-#     && git config --global core.hooksPath "${HOME}/workspace/.githooks"
-
 # ---------------------------------- sdkman for java ----------------------------------
 # https://sdkman.io/install
 ARG JAVA_VERSION
@@ -64,29 +56,6 @@ RUN apt-get -y install locales \
     && echo "${LOCALE} UTF-8" >> /etc/locale.gen \
     && echo "LANG=${LOCALE}" > /etc/locale.conf \
     && locale-gen ${LOCALE}
-
-# ---------------------------------- aws cli ----------------------------------
-
-ARG ZIP_FILE=awscliv2.zip
-ARG BE_PATH_TO_COMPLETER=/usr/local/bin
-
-RUN apt-get install -y less \
-    && curl https://awscli.amazonaws.com/awscli-exe-linux-x86_64.zip -o ${ZIP_FILE} \
-    && unzip ${ZIP_FILE} \
-    && ./aws/install \
-    && rm -f ${ZIP_FILE} \
-    && echo 'export PATH="${BE_PATH_TO_COMPLETER}:${PATH}"' >> ${HOME}/.bashrc \
-    && source ${HOME}/.bashrc \
-    && complete -C "${BE_PATH_TO_COMPLETER}/aws_completer" aws
-
-# ---------------------------------- github cli ----------------------------------
-
-RUN curl -fsSL https://cli.github.com/packages/githubcli-archive-keyring.gpg | dd of=/usr/share/keyrings/githubcli-archive-keyring.gpg \
-    && chmod go+r /usr/share/keyrings/githubcli-archive-keyring.gpg \
-    && echo "deb [arch=$(dpkg --print-architecture) signed-by=/usr/share/keyrings/githubcli-archive-keyring.gpg] https://cli.github.com/packages stable main" | tee /etc/apt/sources.list.d/github-cli.list > /dev/null \
-    && apt-get update \
-    && apt-get install gh -y \
-    && gh --version
 
 # ---------------------------------- addtional packages ----------------------------------
 

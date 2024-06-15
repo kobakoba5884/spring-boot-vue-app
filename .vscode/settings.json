@@ -2,6 +2,7 @@
   "cSpell.words": [
     "amazonwebservices",
     "azuretools",
+    "dbuser",
     "esbenp",
     "fwcd",
     "humao",
@@ -12,35 +13,14 @@
     "mathiasfrohlich",
     "mtxr",
     "oderwat",
+    "posgres",
     "println",
     "rangav",
     "Saburo",
     "sqltools",
     "vscjava"
   ],
-  "java.compile.nullAnalysis.mode": "automatic",
-  "sqltools.connections": [
-    {
-      "previewLimit": 50,
-      "server": "postgres",
-      "port": 5432,
-      "driver": "PostgreSQL",
-      "name": "docker-posgres",
-      "database": "dev",
-      "username": "dbuser",
-      "password": "thisIsReallyStrongPassword123"
-    }
-  ],
-  "kotlin.debugAdapter.enabled": false,
-  "kotlin.languageServer.enabled": true,
-  "kotlin.languageServer.debugAttach.port": 5009,
-  "kotlin.languageServer.port": 5010,
-  "kotlin.languageServer.debugAttach.enabled": false,
-  "kotlin.languageServer.debugAttach.autoSuspend": false,
-  "kotlin.compiler.jvm.target": "17",
-  "kotlin.externalSources.autoConvertToKotlin": true,
   "rest-client.environmentVariables": {
-
     "$shared": {
       "version": "v1",
       "email": "hoge@xxx.com"
