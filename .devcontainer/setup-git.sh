@@ -10,6 +10,8 @@ git config --global user.email "${GIT_EMAIL}"
 
 git config --global core.editor "code --wait"
 
+git config commit.template "${HOME}/workspace/commitTemplate.txt"
+
 git config core.hooksPath "${HOME}/workspace/.githooks"
 
 chmod +x ../.githooks/pre-commit
