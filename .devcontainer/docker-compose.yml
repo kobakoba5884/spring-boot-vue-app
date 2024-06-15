@@ -25,6 +25,7 @@ services:
       DB_PASSWORD: ${DB_PASSWORD:-thisIsReallyStrongPassword123}
       DB_ROOT_PASSWORD: ${DB_ROOT_PASSWORD:-thisIsReallyStrongPassword123}
       DB_DRIVER: ${DB_DRIVER:-org.postgresql.Driver}
+      NGINX_PORT: ${NGINX_PORT:-3333}
     volumes:
       - ../:/home/${USER_NAME:-vscode}/workspace:cached
       - ~/.aws:/home/${USER_NAME:-vscode}/.aws
@@ -45,3 +46,12 @@ services:
       - ../.docker/postgres:/var/lib/postgresql/data/
       - ./docker/postgres/init:/docker-entrypoint-initdb.d/
     restart: unless-stopped
+
+  nginx:
+    build:
+      context: ./docker/nginx
+    container_name: ${PROJECT_NAME:-original}-nginx
+    ports:
+      - ${NGINX_PORT:-3333}:80
+    volumes:
+      - ./docker/nginx/conf.d:/etc/nginx/conf.d
