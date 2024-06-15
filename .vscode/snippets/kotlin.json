@@ -1,0 +1,13 @@
+{
+  "Kotlin Package Declaration": {
+    "prefix": "kotlinFile",
+    "body": [
+      "package com.minmin.${1:packageName}",
+      "",
+      "class ${2:ClassName} {",
+      "    $0",
+      "}"
+    ],
+    "description": "Kotlin file template with package declaration"
+  }
+}

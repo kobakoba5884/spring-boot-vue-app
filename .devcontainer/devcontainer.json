@@ -12,6 +12,7 @@
         "files.eol": "\n",
         "java.import.exclusions": ["**/.docker"],
         "java.configuration.updateBuildConfiguration": "automatic",
+        "java.import.gradle.wrapper.enabled": true,
         "sqltools.connections": [
           {
             "previewLimit": 50,
