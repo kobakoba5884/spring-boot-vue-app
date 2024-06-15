@@ -1,1 +1,1 @@
-# spring-boot-kotlin-api
+# spring-boot-vue-app
