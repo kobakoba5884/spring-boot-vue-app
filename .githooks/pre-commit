@@ -1,16 +1,28 @@
 #!/bin/bash
 
 DEVCONTAINER_DIR=".devcontainer"
+ENV_FILE="${DEVCONTAINER_DIR}/.env"
+EXAMPLE_FILE="${DEVCONTAINER_DIR}/.env.example"
+EXCLUDE_VARS=("GIT_USER" "GIT_EMAIL")
 
 # https://gist.github.com/linhmtran168/2286aeafe747e78f53bf
 echo "cp start"
 
-cp "${DEVCONTAINER_DIR}/.env" "${DEVCONTAINER_DIR}/.env.example"
+if [ -f "$ENV_FILE" ]; then
+    # Create a regex pattern for excluded variables
+    EXCLUDE_PATTERN=$(printf "|%s" "${EXCLUDE_VARS[@]}")
+    EXCLUDE_PATTERN="${EXCLUDE_PATTERN:1}"  # Remove the leading '|'
 
-if [ $? -eq 0 ]; then
-    echo "COMMIT SUCCEEDED"
+    grep -vE "^(${EXCLUDE_PATTERN})=" "$ENV_FILE" > "$EXAMPLE_FILE"
+
+    if [ $? -eq 0 ]; then
+        echo "COMMIT SUCCEEDED"
+    else
+        echo "Please try again."
+        exit 1
+    fi
 else
-    echo "Please try again."
+    echo "$ENV_FILE not found."
     exit 1
 fi
 
