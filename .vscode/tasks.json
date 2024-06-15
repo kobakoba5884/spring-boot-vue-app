@@ -2,10 +2,10 @@
   "version": "2.0.0",
   "tasks": [
     {
-      "label": "build",
+      "label": "task",
       "type": "shell",
-      "command": "./gradlew",
-      "args": ["build"],
+      "command": "gradle",
+      "args": ["${input:taskName}"],
       "group": {
         "kind": "build",
         "isDefault": true
@@ -18,28 +18,25 @@
       },
       "problemMatcher": [],
       "options": {
-        "cwd": "${workspaceFolder}/hello-world-api"
+        "cwd": "${workspaceFolder}/${input:projectName}"
       }
+    }
+  ],
+  // https://code.visualstudio.com/docs/editor/variables-reference
+  "inputs": [
+    {
+      "type": "pickString",
+      "id": "taskName",
+      "description": "What do you wanna do?",
+      "options": ["build", "clean", "bootRun"],
+      "default": "build"
     },
     {
-      "label": "bootRun",
-      "type": "shell",
-      "command": "./gradlew",
-      "args": ["bootRun"],
-      "group": {
-        "kind": "build",
-        "isDefault": false
-      },
-      "presentation": {
-        "echo": true,
-        "reveal": "always",
-        "focus": false,
-        "panel": "shared"
-      },
-      "problemMatcher": [],
-      "options": {
-        "cwd": "${workspaceFolder}/hello-world-api"
-      }
+      "type": "pickString",
+      "id": "projectName",
+      "description": "What is the name of the project?",
+      "options": ["hello-world-api", "author-api", "book-api", "comment-api"],
+      "default": "hello-world-api"
     }
   ]
 }
