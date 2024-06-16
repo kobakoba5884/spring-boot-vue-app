@@ -39,7 +39,8 @@
         "redhat.vscode-xml",
         "fwcd.kotlin",
         "esbenp.prettier-vscode",
-        "Swellaby.node-pack"
+        "Swellaby.node-pack",
+        "Vue.volar"
       ]
     }
   }
