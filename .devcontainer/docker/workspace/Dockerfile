@@ -35,12 +35,26 @@ ENV HOME=/home/${USER_NAME}
 # https://sdkman.io/install
 ARG JAVA_VERSION
 ARG GRADLE_VERSION
+ARG KOTLIN_VERSION
 
 RUN curl -s "https://get.sdkman.io" | bash \
     && source "${HOME}/.sdkman/bin/sdkman-init.sh" \
     && sdk install java "${JAVA_VERSION}" \
     && sdk install gradle ${GRADLE_VERSION} \
     && sdk install kotlin ${KOTLIN_VERSION}
+
+
+# ---------------------------------- nvm for node ----------------------------------
+# default node version
+ARG NODE_VERSION
+
+ARG NODE_GLOBAL_PKG="prettier"
+
+RUN curl -o- https://raw.githubusercontent.com/nvm-sh/nvm/v0.39.1/install.sh | bash \
+    && source "${HOME}/.nvm/nvm.sh" \
+    && nvm install ${NODE_VERSION} \
+    && npm update -g \
+    && npm i --global ${NODE_GLOBAL_PKG}
 
 USER root
 

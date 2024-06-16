@@ -38,7 +38,9 @@
         "humao.rest-client",
         "redhat.vscode-xml",
         "fwcd.kotlin",
-        "esbenp.prettier-vscode"
+        "esbenp.prettier-vscode",
+        "Swellaby.node-pack",
+        "Vue.volar"
       ]
     }
   }

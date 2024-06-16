@@ -5,3 +5,6 @@
 # git
 temp/
 !temp/.gitkeep
+
+# frontend
+node_modules

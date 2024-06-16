@@ -13,6 +13,7 @@ services:
         JAVA_VERSION: ${JAVA_VERSION:-17.0.11-amzn}
         GRADLE_VERSION: ${GRADLE_VERSION:-8.8}
         KOTLIN_VERSION: ${KOTLIN_VERSION:-2.0.0}
+        NODE_VERSION: ${NODE_VERSION:-18.18.0}
         LOCALE: ${LOCALE:-ja_JP.UTF-8}
     tty: true
     environment:
