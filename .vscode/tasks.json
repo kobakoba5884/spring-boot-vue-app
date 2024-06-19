@@ -2,10 +2,10 @@
   "version": "2.0.0",
   "tasks": [
     {
-      "label": "task",
+      "label": "build",
       "type": "shell",
       "command": "gradle",
-      "args": ["${input:taskName}"],
+      "args": ["build", "-x", "test"],
       "group": {
         "kind": "build",
         "isDefault": true
@@ -20,23 +20,75 @@
       "options": {
         "cwd": "${workspaceFolder}/backend/${input:projectName}"
       }
+    },
+    {
+      "label": "clean",
+      "type": "shell",
+      "command": "gradle",
+      "args": ["clean"],
+      "group": {
+        "kind": "build",
+        "isDefault": false
+      },
+      "presentation": {
+        "echo": true,
+        "reveal": "always",
+        "focus": false,
+        "panel": "shared"
+      },
+      "problemMatcher": [],
+      "options": {
+        "cwd": "${workspaceFolder}/backend/${input:projectName}"
+      }
+    },
+    {
+      "label": "bootRun",
+      "type": "shell",
+      "command": "gradle",
+      "args": ["bootRun"],
+      "group": {
+        "kind": "build",
+        "isDefault": false
+      },
+      "presentation": {
+        "echo": true,
+        "reveal": "always",
+        "focus": false,
+        "panel": "shared"
+      },
+      "problemMatcher": [],
+      "options": {
+        "cwd": "${workspaceFolder}/backend/${input:projectName}"
+      }
+    },
+    {
+      "label": "debug",
+      "type": "shell",
+      "command": "gradle",
+      "args": ["bootRun", "--debug-jvm"],
+      "group": {
+        "kind": "test",
+        "isDefault": false
+      },
+      "presentation": {
+        "echo": true,
+        "reveal": "always",
+        "focus": false,
+        "panel": "shared"
+      },
+      "problemMatcher": [],
+      "options": {
+        "cwd": "${workspaceFolder}/backend/${input:projectName}"
+      }
     }
   ],
-  // https://code.visualstudio.com/docs/editor/variables-reference
   "inputs": [
-    {
-      "type": "pickString",
-      "id": "taskName",
-      "description": "What do you wanna do?",
-      "options": ["build", "clean", "bootRun"],
-      "default": "build"
-    },
     {
       "type": "pickString",
       "id": "projectName",
       "description": "What is the name of the project?",
-      "options": ["hello-world-api", "author-api", "book-api", "comment-api"],
-      "default": "hello-world-api"
+      "options": ["author-api", "book-api", "comment-api"],
+      "default": "author-api"
     }
   ]
 }
