@@ -10,12 +10,12 @@
     "vscode": {
       "settings": {
         "files.eol": "\n",
-        "java.import.exclusions": ["**/.docker"],
+        "editor.defaultFormatter": "esbenp.prettier-vscode",
         "java.configuration.updateBuildConfiguration": "automatic",
         "java.import.gradle.wrapper.enabled": true,
         "kotlin.debugAdapter.enabled": true,
         "kotlin.languageServer.enabled": true,
-        "kotlin.languageServer.debugAttach.port": 5009,
+        "kotlin.languageServer.debugAttach.port": 5005,
         "kotlin.languageServer.port": 5010,
         "kotlin.languageServer.debugAttach.enabled": false,
         "kotlin.languageServer.debugAttach.autoSuspend": true,
