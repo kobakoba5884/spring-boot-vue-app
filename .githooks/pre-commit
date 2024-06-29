@@ -16,7 +16,8 @@ if [ -f "$ENV_FILE" ]; then
     grep -vE "^(${EXCLUDE_PATTERN})=" "$ENV_FILE" > "$EXAMPLE_FILE"
 
     if [ $? -eq 0 ]; then
-        echo "COMMIT SUCCEEDED"
+        echo "copy succeeded"
+        git add "$EXAMPLE_FILE"
     else
         echo "Please try again."
         exit 1
