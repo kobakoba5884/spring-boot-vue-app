@@ -20,7 +20,10 @@
         "kotlin.languageServer.debugAttach.enabled": false,
         "kotlin.languageServer.debugAttach.autoSuspend": true,
         "kotlin.compiler.jvm.target": "17",
-        "kotlin.externalSources.autoConvertToKotlin": true
+        "kotlin.externalSources.autoConvertToKotlin": true,
+        "[yaml]": {
+          "editor.defaultFormatter": "redhat.vscode-yaml"
+        }
       },
       "postCreateCommand": "./setup-git.sh",
       "extensions": [
@@ -40,7 +43,8 @@
         "fwcd.kotlin",
         "esbenp.prettier-vscode",
         "Swellaby.node-pack",
-        "Vue.volar"
+        "Vue.volar",
+        "github.vscode-github-actions"
       ]
     }
   }

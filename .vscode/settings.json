@@ -57,5 +57,8 @@
       "username": "dbuser",
       "password": "thisIsReallyStrongPassword123"
     }
-  ]
+  ],
+  "[yaml]": {
+    "editor.defaultFormatter": "redhat.vscode-yaml"
+  }
 }
