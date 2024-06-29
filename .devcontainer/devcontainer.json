@@ -5,6 +5,7 @@
   "workspaceFolder": "/home/vscode/workspace",
   "remoteUser": "vscode",
   "shutdownAction": "stopCompose",
+  "postCreateCommand": "${containerWorkspaceFolder}/.devcontainer/setup.sh",
   // https://github.com/redhat-developer/vscode-java/issues/1156
   "customizations": {
     "vscode": {
@@ -22,7 +23,6 @@
         "kotlin.compiler.jvm.target": "17",
         "kotlin.externalSources.autoConvertToKotlin": true
       },
-      "postCreateCommand": "./setup-git.sh",
       "extensions": [
         "vscjava.vscode-java-pack",
         "vscjava.vscode-gradle",
