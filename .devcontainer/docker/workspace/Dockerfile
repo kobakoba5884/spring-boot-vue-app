@@ -31,6 +31,8 @@ USER ${USER_NAME}
 
 ENV HOME=/home/${USER_NAME}
 
+WORKDIR ${HOME}
+
 # ---------------------------------- sdkman for java ----------------------------------
 # https://sdkman.io/install
 ARG JAVA_VERSION
@@ -55,6 +57,14 @@ RUN curl -o- https://raw.githubusercontent.com/nvm-sh/nvm/v0.39.1/install.sh | b
     && nvm install ${NODE_VERSION} \
     && npm update -g \
     && npm i --global ${NODE_GLOBAL_PKG}
+
+
+# ---------------------------------- set up keycloak ----------------------------------
+RUN curl -L -o keycloak-25.0.1.tar.gz https://github.com/keycloak/keycloak/releases/download/25.0.1/keycloak-25.0.1.tar.gz | bash \
+    && mkdir ~/.keycloak \
+    && tar xvzf keycloak-25.0.1.tar.gz \
+    && mv keycloak-25.0.1 ~/.keycloak \
+    && rm ~/keycloak-25.0.1.tar.gz
 
 USER root
 
