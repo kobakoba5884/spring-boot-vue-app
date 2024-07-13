@@ -26,13 +26,8 @@ services:
       DB_PASSWORD: ${DB_PASSWORD:-thisIsReallyStrongPassword123}
       DB_ROOT_PASSWORD: ${DB_ROOT_PASSWORD:-thisIsReallyStrongPassword123}
       DB_DRIVER: ${DB_DRIVER:-org.postgresql.Driver}
-      AUTHOR_API_DB_HOST: ${AUTHOR_API_DB_HOST:-author-api-postgres}
-      AUTHOR_API_DB_NAME: ${AUTHOR_API_DB_NAME:-dev}
-      AUTHOR_API_DB_USER: ${AUTHOR_API_DB_USER:-dbuser}
-      AUTHOR_API_DB_URL: "jdbc:postgresql://${AUTHOR_API_DB_HOST}:${AUTHOR_API_DB_PORT}/${AUTHOR_API_DB_NAME}"
-      AUTHOR_API_DB_PASSWORD: ${AUTHOR_API_DB_PASSWORD:-thisIsReallyStrongPassword123}
-      AUTHOR_API_DB_DRIVER: ${AUTHOR_API_DB_DRIVER:-org.postgresql.Driver}
       NGINX_PORT: ${NGINX_PORT:-3333}
+      # KEYCLOAK_HTTP_PORT: ${KEYCLOAK_HTTP_PORT:-2424}
       GIT_USER: ${GIT_USER:-user}
       GIT_EMAIL: ${GIT_EMAIL:-email}
     volumes:
@@ -41,31 +36,18 @@ services:
     ports:
       - ${WORKSPACE_PORT:-9999}:9999
 
-  author-api-postgres:
-    container_name: ${PROJECT_NAME:-original}-author-api-postgres
+  postgres:
+    container_name: ${PROJECT_NAME:-original}-postgres
     image: postgres:15
     environment:
-      POSTGRES_USER: ${AUTHOR_API_DB_USER:-dbuser}
-      POSTGRES_PASSWORD: ${AUTHOR_API_DB_PASSWORD:-thisIsReallyStrongPassword123}
-      POSTGRES_DB: ${AUTHOR_API_DB_NAME:-dev}
+      POSTGRES_USER: ${DB_USER:-dbuser}
+      POSTGRES_PASSWORD: ${DB_PASSWORD:-thisIsReallyStrongPassword123}
+      POSTGRES_DB: ${DB_NAME:-dev}
     ports:
-      - 6543:5432
+      - ${DB_PORT:-5432}:5432
     volumes:
-      - ../.docker/author_api_postgres:/var/lib/postgresql/data/
+      - ../.docker/postgres:/var/lib/postgresql/data/
     restart: unless-stopped
-
-  # postgres:
-  #   container_name: ${PROJECT_NAME:-original}-postgres
-  #   image: postgres:15
-  #   environment:
-  #     POSTGRES_USER: ${DB_USER:-dbuser}
-  #     POSTGRES_PASSWORD: ${DB_PASSWORD:-thisIsReallyStrongPassword123}
-  #     POSTGRES_DB: ${DB_NAME:-dev}
-  #   ports:
-  #     - ${DB_PORT:-5432}:5432
-  #   volumes:
-  #     - ../.docker/postgres:/var/lib/postgresql/data/
-  #   restart: unless-stopped
 
   nginx:
     build:
@@ -75,3 +57,25 @@ services:
       - ${NGINX_PORT:-3333}:80
     volumes:
       - ./docker/nginx/conf.d:/etc/nginx/conf.d
+
+  # keycloak:
+  #   image: bitnami/keycloak:24
+  #   container_name: ${PROJECT_NAME:-original}-keycloak
+  #   ports: 
+  #     - ${KEYCLOAK_HTTP_PORT:-2424}:8080
+  #   restart: always
+  #   environment:
+  #     KEYCLOAK_ADMIN: ${KEYCLOAK_ADMIN:-admin}
+  #     KEYCLOAK_ADMIN_PASSWORD: ${KEYCLOAK_ADMIN_PASSWORD:-password}
+      # KEYCLOAK_HTTP_PORT: ${KEYCLOAK_HTTP_PORT:-2424}
+      # KEYCLOAK_LOG_LEVEL: ${KEYCLOAK_LOG_LEVEL:-info}
+      # KEYCLOAK_EXTRA_ARGS: --import-realm
+    # volumes:
+    #   - ./docker/keycloak/realms:/opt/bitnami/keycloak/data/import
+
+
+    # https://hub.docker.com/r/bitnami/keycloak
+    # https://medium.com/@kaloyanmanev/bitnami-keycloack-inside-docker-compose-import-realm-on-startup-3627a7da7f39
+    # https://github.com/bitnami/charts/blob/main/bitnami/keycloak/README.md#importing-a-realm
+      # https://github.com/bitnami/containers/tree/main/bitnami/keycloak
+    # https://www.keycloak.org/server/importExport#_importing_a_realm_from_a_directory

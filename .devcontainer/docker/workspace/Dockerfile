@@ -62,14 +62,23 @@ RUN curl -o- https://raw.githubusercontent.com/nvm-sh/nvm/v0.39.1/install.sh | b
 # ---------------------------------- set up keycloak ----------------------------------
 ENV KEYCLOAK_ADMIN=admin
 ENV KEYCLOAK_ADMIN_PASSWORD=password
+ARG KEYCLOAK_VERSION=25.0.1
 
-RUN curl -L -o keycloak-25.0.1.tar.gz https://github.com/keycloak/keycloak/releases/download/25.0.1/keycloak-25.0.1.tar.gz | bash \
+RUN curl -L -o keycloak-${KEYCLOAK_VERSION}.tar.gz https://github.com/keycloak/keycloak/releases/download/${KEYCLOAK_VERSION}/keycloak-${KEYCLOAK_VERSION}.tar.gz | bash \
     && mkdir ~/.keycloak \
-    && tar xvzf keycloak-25.0.1.tar.gz \
-    && mv keycloak-25.0.1 ~/.keycloak \
-    && rm ~/keycloak-25.0.1.tar.gz \
-    && echo "http-port=2424" >> ~/.keycloak/keycloak-25.0.1/conf/keycloak.conf \
-    && echo 'alias kc="~/.keycloak/keycloak-25.0.1/bin/kc.sh"' >> ~/.bashrc
+    && tar xvzf keycloak-${KEYCLOAK_VERSION}.tar.gz \
+    && mv keycloak-${KEYCLOAK_VERSION} ~/.keycloak \
+    && rm ~/keycloak-${KEYCLOAK_VERSION}.tar.gz \
+    && echo "http-port=2424" >> ~/.keycloak/keycloak-${KEYCLOAK_VERSION}/conf/keycloak.conf \
+    && echo "alias kc='~/.keycloak/keycloak-${KEYCLOAK_VERSION}/bin/kc.sh'" >> ~/.bashrc
+
+ARG KEYCLOAK_OLD_VERSION=15.0.2
+
+RUN curl -L -o keycloak-${KEYCLOAK_OLD_VERSION}.tar.gz https://github.com/keycloak/keycloak/releases/download/${KEYCLOAK_OLD_VERSION}/keycloak-${KEYCLOAK_OLD_VERSION}.tar.gz | bash \
+    && tar xvzf keycloak-${KEYCLOAK_OLD_VERSION}.tar.gz \
+    && mv keycloak-${KEYCLOAK_OLD_VERSION} ~/.keycloak \
+    && rm ~/keycloak-${KEYCLOAK_OLD_VERSION}.tar.gz \
+    && echo "alias kc_old='~/.keycloak/keycloak-${KEYCLOAK_OLD_VERSION}/bin/standalone.sh'" >> ~/.bashrc
 
 USER root
 
