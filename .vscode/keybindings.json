@@ -1,0 +1,20 @@
+[
+  {
+    "key": "ctrl+shift+u",
+    "command": "workbench.action.output.toggleOutput",
+    "when": "workbench.panel.output.active"
+  },
+  {
+    "key": "ctrl+shift+d",
+    "command": "workbench.view.debug",
+    "when": "viewContainer.workbench.view.debug.enabled"
+  },
+  {
+    "key": "ctrl+t u",
+    "command": "editor.action.transformToUppercase"
+  },
+  {
+    "key": "ctrl+t l",
+    "command": "editor.action.transformToLowercase"
+  }
+]
