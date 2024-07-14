@@ -22,10 +22,22 @@ git config --global core.editor "code --wait" || { echo "Failed to set core edit
 cd "${WORKSPACE_DIR}" || { echo "Failed to change directory to ${WORKSPACE_DIR}"; exit 1; }
 
 # Set commit template and hooks path
-git config commit.template "${WORKSPACE_DIR}/commitTemplate.txt" || { echo "Failed to set commit template"; exit 1; }
+git config --global commit.template "${WORKSPACE_DIR}/.devcontainer/git/commitTemplate.txt" || { echo "Failed to set commit template"; exit 1; }
 git config core.hooksPath "${WORKSPACE_DIR}/.githooks" || { echo "Failed to set hooks path"; exit 1; }
 
 # Make the pre-commit hook executable
 chmod +x "${WORKSPACE_DIR}/.githooks/pre-commit" || { echo "Failed to make pre-commit hook executable"; exit 1; }
+
+# Set git alias
+git config --global alias.co 'commit'
+git config --global alias.cm 'commit -m'
+git config --global alias.st 'status'
+git config --global alias.br 'branch'
+git config --global alias.ch 'checkout'
+git config --global alias.chb 'checkout -b'
+git config --global alias.p 'push'
+git config --global alias.rv 'remote -v'
+git config --global alias.d 'diff'
+git config --global alias.gl 'config --global -l'
 
 echo "Git configuration completed successfully."
