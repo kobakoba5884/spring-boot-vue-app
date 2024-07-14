@@ -41,9 +41,10 @@ ARG KOTLIN_VERSION
 
 RUN curl -s "https://get.sdkman.io" | bash \
     && source "${HOME}/.sdkman/bin/sdkman-init.sh" \
-    && sdk install java "${JAVA_VERSION}" \
+    && sdk install java ${JAVA_VERSION} \
     && sdk install gradle ${GRADLE_VERSION} \
-    && sdk install kotlin ${KOTLIN_VERSION}
+    && sdk install kotlin ${KOTLIN_VERSION} \
+    && java --version
 
 
 # ---------------------------------- nvm for node ----------------------------------
@@ -78,7 +79,10 @@ RUN curl -L -o keycloak-${KEYCLOAK_OLD_VERSION}.tar.gz https://github.com/keyclo
     && tar xvzf keycloak-${KEYCLOAK_OLD_VERSION}.tar.gz \
     && mv keycloak-${KEYCLOAK_OLD_VERSION} ~/.keycloak \
     && rm ~/keycloak-${KEYCLOAK_OLD_VERSION}.tar.gz \
-    && echo "alias kc_old='~/.keycloak/keycloak-${KEYCLOAK_OLD_VERSION}/bin/standalone.sh'" >> ~/.bashrc
+    && echo "alias kc_old='~/.keycloak/keycloak-${KEYCLOAK_OLD_VERSION}/bin/standalone.sh'" >> ~/.bashrc 
+
+RUN source ${HOME}/.sdkman/bin/sdkman-init.sh \
+    &&~/.keycloak/keycloak-${KEYCLOAK_OLD_VERSION}/bin/add-user-keycloak.sh --user ${KEYCLOAK_ADMIN} --password ${KEYCLOAK_ADMIN_PASSWORD}
 
 USER root
 
