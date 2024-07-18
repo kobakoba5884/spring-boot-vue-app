@@ -8,3 +8,6 @@ temp/
 
 # frontend
 node_modules
+
+# backend
+build/
