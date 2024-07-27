@@ -85,6 +85,10 @@ RUN curl -L -o keycloak-${KEYCLOAK_OLD_VERSION}.tar.gz https://github.com/keyclo
 RUN source ${HOME}/.sdkman/bin/sdkman-init.sh \
     &&~/.keycloak/keycloak-${KEYCLOAK_OLD_VERSION}/bin/add-user-keycloak.sh --user ${KEYCLOAK_ADMIN} --password ${KEYCLOAK_ADMIN_PASSWORD}
 
+# ---------------------------------- set up z ----------------------------------
+RUN git clone https://github.com/rupa/z.git ~/.z-sh \
+    && echo '. $HOME/.z-sh/z.sh' >> ~/.bashrc
+
 USER root
 
 # ---------------------------------- set up language ----------------------------------

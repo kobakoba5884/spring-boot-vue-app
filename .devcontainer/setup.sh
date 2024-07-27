@@ -17,6 +17,7 @@ git config --global init.defaultBranch main || { echo "Failed to set default bra
 git config --global user.name "${GIT_USER}" || { echo "Failed to set user name"; exit 1; }
 git config --global user.email "${GIT_EMAIL}" || { echo "Failed to set user email"; exit 1; }
 git config --global core.editor "code --wait" || { echo "Failed to set core editor"; exit 1; }
+git config --global pull.rebase true
 
 # Change to the workspace directory
 cd "${WORKSPACE_DIR}" || { echo "Failed to change directory to ${WORKSPACE_DIR}"; exit 1; }
@@ -34,10 +35,11 @@ git config --global alias.cm 'commit -m'
 git config --global alias.st 'status'
 git config --global alias.br 'branch'
 git config --global alias.ch 'checkout'
-git config --global alias.chb 'checkout -b'
+git config --global alias.cb 'checkout -b'
 git config --global alias.p 'push'
 git config --global alias.rv 'remote -v'
 git config --global alias.d 'diff'
 git config --global alias.gl 'config --global -l'
+git config --global alias.cleanup-merged '!git branch --merged | grep -vE "^\*|^\s*main$|^\s*master$" | xargs -n 1 git branch -d'
 
 echo "Git configuration completed successfully."
