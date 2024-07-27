@@ -1,5 +1,0 @@
-spring:
-  application:
-    name: book-api
-server:
-  port: 7070

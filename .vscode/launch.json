@@ -2,21 +2,10 @@
   "configurations": [
     {
       "type": "kotlin",
-      "request": "attach",
-      "name": "Kotlin SpringBoot Attach",
-      "hostName": "localhost",
-      "port": 5005,
-      "timeout": 30000,
-      "projectRoot": "${workspaceFolder}/backend/${input:projectName}"
-    }
-  ],
-  "inputs": [
-    {
-      "type": "pickString",
-      "id": "projectName",
-      "description": "What is the name of the project?",
-      "options": ["author-api", "book-api", "comment-api"],
-      "default": "author-api"
+      "request": "launch",
+      "name": "Kotlin SpringBoot Launch",
+      "mainClass": "com.minmin.auth_hanson_api.AuthHansonApiApplicationKt",
+      "projectRoot": "${workspaceFolder}/backend/auth-hanson-api"
     }
   ]
 }

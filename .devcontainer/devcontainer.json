@@ -44,7 +44,8 @@
         "esbenp.prettier-vscode",
         "Swellaby.node-pack",
         "Vue.volar",
-        "github.vscode-github-actions"
+        "github.vscode-github-actions",
+        "redhat.vscode-yaml"
       ]
     }
   }
