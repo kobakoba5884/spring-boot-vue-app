@@ -1,0 +1,5 @@
+spring:
+  application:
+    name: auth-hans-on-api
+server:
+  port: 8888

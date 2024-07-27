@@ -1,0 +1,9 @@
+@host = {{hostname}}:8888
+@endpoint = http://{{host}}/token-introspection/health
+
+# / GET request
+
+GET {{endpoint}}
+Accept: text/plain
+
+###
