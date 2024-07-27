@@ -106,7 +106,7 @@ RUN apt-get -y install locales \
 
 # ---------------------------------- addtional packages ----------------------------------
 
-ARG ADDITONAL_PKG="iputils-ping lsof tree"
+ARG ADDITONAL_PKG="iputils-ping lsof tree jq uuid-runtime"
 
 RUN apt-get update -y \
     && apt-get install ${ADDITONAL_PKG} -y \

@@ -43,3 +43,12 @@ git config --global alias.gl 'config --global -l'
 git config --global alias.cleanup-merged '!git branch --merged | grep -vE "^\*|^\s*main$|^\s*master$" | xargs -n 1 git branch -d'
 
 echo "Git configuration completed successfully."
+
+# Setup keycloak
+SETUP_KC_DIR="${HOME}/workspace/.devcontainer/docker/keycloak"
+
+chmod +x $SETUP_KC_DIR/setup-keycloak.sh
+
+source $SETUP_KC_DIR/setup-keycloak.sh
+
+
