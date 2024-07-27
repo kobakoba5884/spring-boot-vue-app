@@ -45,7 +45,8 @@
         "Swellaby.node-pack",
         "Vue.volar",
         "github.vscode-github-actions",
-        "redhat.vscode-yaml"
+        "redhat.vscode-yaml",
+        "mhutchie.git-graph"
       ]
     }
   }
