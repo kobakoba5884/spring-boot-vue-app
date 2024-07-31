@@ -1,13 +1,22 @@
 #!/bin/bash
 
+# KC_BIN_DIR="${HOME}/.keycloak/keycloak-15.0.2/bin"
+# REALM_NAME=demo-api
+# USER_NAME=user-api
+# BACKEND_CLIENT_ID=demo-resourceserver
+# FRONTEND_CLIENT_ID=demo-client
+# BACKEND_CLIENT_SECRET=$(uuidgen)
+# FRONTEND_CLIENT_SECRET=$(uuidgen)
+# REDIRECT_URIS=http://localhost:8081/gettoken
+
 KC_BIN_DIR="${HOME}/.keycloak/keycloak-15.0.2/bin"
-REALM_NAME=demo-api
+REALM_NAME=auth-hands-on-api
 USER_NAME=user-api
-BACKEND_CLIENT_ID=demo-resourceserver
-FRONTEND_CLIENT_ID=demo-client
+BACKEND_CLIENT_ID=auth-hands-on-api
+FRONTEND_CLIENT_ID=auth-hands-on-client
 BACKEND_CLIENT_SECRET=$(uuidgen)
 FRONTEND_CLIENT_SECRET=$(uuidgen)
-REDIRECT_URIS=http://localhost:8081/gettoken
+REDIRECT_URIS=http://localhost:2222/gettoken
 
 BASHRC_FILE="${HOME}/.bashrc"
 
