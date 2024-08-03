@@ -9,6 +9,12 @@
 
 <body>
     <div>
+        <h2>Token Ops</h2>
+            <form method="POST">
+                <div>
+                    <input type="submit" value="Get Token" th:formaction="@{/auth}" />
+                </div>
+            </form>
         <h2>APIs</h2>
         <form method="POST">
             <input type="submit" value="Health API" th:formaction="@{/call-health}" />
