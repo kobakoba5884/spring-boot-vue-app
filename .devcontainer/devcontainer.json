@@ -1,11 +1,16 @@
 {
   "name": "kotlin-workspace",
-  "dockerComposeFile": ["docker-compose.yml"],
+  "dockerComposeFile": [
+    "docker-compose.yml"
+  ],
   "service": "workspace",
   "workspaceFolder": "/home/vscode/workspace",
   "remoteUser": "vscode",
   "shutdownAction": "stopCompose",
   "postCreateCommand": "${containerWorkspaceFolder}/.devcontainer/setup.sh",
+  "forwardPorts": [
+    8080
+  ],
   // https://github.com/redhat-developer/vscode-java/issues/1156
   "customizations": {
     "vscode": {
