@@ -16,12 +16,12 @@ class JsonUtil {
                     setSerializationInclusion(JsonInclude.Include.NON_NULL)
                 }
 
-        fun <T> unmarshal(content: ByteArray, type: Class<T>): T? {
+        fun <T> unmarshal(content: ByteArray, type: Class<T>): T{
             return try {
                 mapper.readValue(content, type)
             } catch (e: IOException) {
                 e.printStackTrace()
-                null
+                throw RuntimeException()
             }
         }
         fun marshal(obj: Any): String {

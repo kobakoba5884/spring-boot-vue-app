@@ -27,13 +27,13 @@ open class JsonWebToken(
     companion object {
         fun <T : JsonWebToken> parse(str: String, clazz: KClass<T>): T? {
             val parts = str.split(".")
-            if (parts.size < 2 || parts.size > 3) return null
+            if (parts.size < 2 || parts.size > 3) throw RuntimeException()
 
             val jwt = JsonUtil.unmarshal(Base64urlUtil.decode(parts[1]), clazz.java)
-            jwt?.payload = Base64urlUtil.decode(parts[1])
-            jwt?.header = JsonUtil.unmarshal(Base64urlUtil.decode(parts[0]), Header::class.java)
-            jwt?.signature = Base64urlUtil.decode(parts[2])
-            jwt?.tokenString = str
+            jwt.header = JsonUtil.unmarshal(Base64urlUtil.decode(parts[0]), Header::class.java)
+            jwt.payload = Base64urlUtil.decode(parts[1])
+            jwt.signature = Base64urlUtil.decode(parts[2])
+            jwt.tokenString = str
 
             return jwt
         }
@@ -42,7 +42,7 @@ open class JsonWebToken(
     fun getPayloadJSON(): String {
         val payload = this.payload ?: return ""
         val obj = JsonUtil.unmarshal(payload, Any::class.java)
-        return JsonUtil.marshal(obj!!)
+        return JsonUtil.marshal(obj)
     }
 
     fun getExpDate(): Date {
