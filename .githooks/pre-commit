@@ -3,7 +3,7 @@
 DEVCONTAINER_DIR=".devcontainer"
 ENV_FILE="${DEVCONTAINER_DIR}/.env"
 EXAMPLE_FILE="${DEVCONTAINER_DIR}/.env.example"
-EXCLUDE_VARS=("GIT_USER" "GIT_EMAIL")
+EXCLUDE_VARS=("GIT_USER" "GIT_EMAIL", "BACKEND_CLIENT_SECRET", "FRONTEND_CLIENT_SECRET")
 
 # https://gist.github.com/linhmtran168/2286aeafe747e78f53bf
 echo "cp start"

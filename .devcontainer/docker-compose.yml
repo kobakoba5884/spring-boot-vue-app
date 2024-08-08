@@ -18,16 +18,25 @@ services:
     tty: true
     environment:
       TZ: ${TIME_ZONE:-Asia/Tokyo}
-      # DB_HOST: ${DB_HOST:-postgres}
-      # DB_PORT: ${DB_PORT:-5432}
-      # DB_NAME: ${DB_NAME:-dev}
-      # DB_USER: ${DB_USER:-dbuser}
-      # DB_URL: "jdbc:postgresql://${DB_HOST}:${DB_PORT}/${DB_NAME}"
-      # DB_PASSWORD: ${DB_PASSWORD:-thisIsReallyStrongPassword123}
-      # DB_ROOT_PASSWORD: ${DB_ROOT_PASSWORD:-thisIsReallyStrongPassword123}
-      # DB_DRIVER: ${DB_DRIVER:-org.postgresql.Driver}
+      DB_HOST: ${DB_HOST:-postgres}
+      DB_PORT: ${DB_PORT:-5432}
+      DB_NAME: ${DB_NAME:-dev}
+      DB_USER: ${DB_USER:-dbuser}
+      DB_URL: "jdbc:postgresql://${DB_HOST}:${DB_PORT}/${DB_NAME}"
+      DB_PASSWORD: ${DB_PASSWORD:-thisIsReallyStrongPassword123}
+      DB_ROOT_PASSWORD: ${DB_ROOT_PASSWORD:-thisIsReallyStrongPassword123}
+      DB_DRIVER: ${DB_DRIVER:-org.postgresql.Driver}
       # NGINX_PORT: ${NGINX_PORT:-3333}
-      # KEYCLOAK_HTTP_PORT: ${KEYCLOAK_HTTP_PORT:-2424}
+      KEYCLOAK_ADMIN: ${KEYCLOAK_ADMIN:-admin}
+      KEYCLOAK_ADMIN_PASSWORD: ${KEYCLOAK_ADMIN_PASSWORD:-password}
+      KEYCLOAK_HTTP_PORT: ${KEYCLOAK_HTTP_PORT:-8080}
+      REALM_NAME: ${REALM_NAME:-auth-hands-on}
+      BACKEND_CLIENT_ID: ${BACKEND_CLIENT_ID:-auth-hands-on-api}
+      FRONTEND_CLIENT_ID: ${FRONTEND_CLIENT_ID:-auth-hands-on-client}
+      BACKEND_CLIENT_SECRET: ${BACKEND_CLIENT_SECRET:-sample-secret}
+      FRONTEND_CLIENT_SECRET: ${FRONTEND_CLIENT_SECRET:-sample-secret}
+      REDIRECT_URIS: ${REDIRECT_URIS:-http://localhost:2222/gettoken}
+      ORIGIN_URIS: ${ORIGIN_URIS:-http://localhost:2222}
       GIT_USER: ${GIT_USER:-user}
       GIT_EMAIL: ${GIT_EMAIL:-email}
     volumes:
@@ -36,18 +45,18 @@ services:
     ports:
       - ${WORKSPACE_PORT:-9999}:9999
 
-  # postgres:
-  #   container_name: ${PROJECT_NAME:-original}-postgres
-  #   image: postgres:15
-  #   environment:
-  #     POSTGRES_USER: ${DB_USER:-dbuser}
-  #     POSTGRES_PASSWORD: ${DB_PASSWORD:-thisIsReallyStrongPassword123}
-  #     POSTGRES_DB: ${DB_NAME:-dev}
-  #   ports:
-  #     - ${DB_PORT:-5432}:5432
-  #   volumes:
-  #     - ../.docker/postgres:/var/lib/postgresql/data/
-  #   restart: unless-stopped
+  postgres:
+    container_name: ${PROJECT_NAME:-original}-postgres
+    image: postgres:15
+    environment:
+      POSTGRES_USER: ${DB_USER:-dbuser}
+      POSTGRES_PASSWORD: ${DB_PASSWORD:-thisIsReallyStrongPassword123}
+      POSTGRES_DB: ${DB_NAME:-dev}
+    ports:
+      - ${DB_PORT:-5432}:5432
+    volumes:
+      - ../.docker/postgres:/var/lib/postgresql/data/
+    restart: unless-stopped
 
   # nginx:
   #   build:
@@ -58,24 +67,30 @@ services:
   #   volumes:
   #     - ./docker/nginx/conf.d:/etc/nginx/conf.d
 
-  # keycloak:
-  #   image: bitnami/keycloak:24
-  #   container_name: ${PROJECT_NAME:-original}-keycloak
-  #   ports: 
-  #     - ${KEYCLOAK_HTTP_PORT:-2424}:8080
-  #   restart: always
-  #   environment:
-  #     KEYCLOAK_ADMIN: ${KEYCLOAK_ADMIN:-admin}
-  #     KEYCLOAK_ADMIN_PASSWORD: ${KEYCLOAK_ADMIN_PASSWORD:-password}
-      # KEYCLOAK_HTTP_PORT: ${KEYCLOAK_HTTP_PORT:-2424}
-      # KEYCLOAK_LOG_LEVEL: ${KEYCLOAK_LOG_LEVEL:-info}
-      # KEYCLOAK_EXTRA_ARGS: --import-realm
-    # volumes:
-    #   - ./docker/keycloak/realms:/opt/bitnami/keycloak/data/import
-
-
-    # https://hub.docker.com/r/bitnami/keycloak
-    # https://medium.com/@kaloyanmanev/bitnami-keycloack-inside-docker-compose-import-realm-on-startup-3627a7da7f39
-    # https://github.com/bitnami/charts/blob/main/bitnami/keycloak/README.md#importing-a-realm
-      # https://github.com/bitnami/containers/tree/main/bitnami/keycloak
-    # https://www.keycloak.org/server/importExport#_importing_a_realm_from_a_directory
+  # endpoinrt http://localhost:8080/admin/master/console/
+  keycloak:
+    image: bitnami/keycloak:25
+    container_name: ${PROJECT_NAME:-original}-keycloak
+    ports: 
+      - ${KEYCLOAK_HTTP_PORT:-8080}:8080
+    restart: always
+    environment:
+      KEYCLOAK_ADMIN: ${KEYCLOAK_ADMIN:-admin}
+      KEYCLOAK_ADMIN_PASSWORD: ${KEYCLOAK_ADMIN_PASSWORD:-password}
+      KEYCLOAK_DATABASE_HOST: postgres
+      KEYCLOAK_DATABASE_NAME: ${DB_NAME:-dev}
+      KEYCLOAK_DATABASE_USER: ${DB_USER:-dbuser}
+      KEYCLOAK_DATABASE_PASSWORD: ${DB_PASSWORD:-thisIsReallyStrongPassword123}
+      KEYCLOAK_LOG_LEVEL: ${KEYCLOAK_LOG_LEVEL:-info}
+      KEYCLOAK_EXTRA_ARGS: --import-realm
+      REALM_NAME: ${REALM_NAME:-auth-hands-on}
+      BACKEND_CLIENT_ID: ${BACKEND_CLIENT_ID:-auth-hands-on-api}
+      FRONTEND_CLIENT_ID: ${FRONTEND_CLIENT_ID:-auth-hands-on-client}
+      BACKEND_CLIENT_SECRET: ${BACKEND_CLIENT_SECRET:-sample-secret}
+      FRONTEND_CLIENT_SECRET: ${FRONTEND_CLIENT_SECRET:-sample-secret}
+      REDIRECT_URIS: ${REDIRECT_URIS:-http://localhost:2222/gettoken}
+      ORIGIN_URIS: ${ORIGIN_URIS:-http://localhost:2222}
+    volumes:
+      - .devcontainer/docker/keycloak/realms:/opt/bitnami/keycloak/data/import
+    depends_on:
+      - postgres

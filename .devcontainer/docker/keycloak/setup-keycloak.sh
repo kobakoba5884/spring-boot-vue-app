@@ -1,108 +1,137 @@
 #!/bin/bash
 
-# KC_BIN_DIR="${HOME}/.keycloak/keycloak-15.0.2/bin"
-# REALM_NAME=demo-api
-# USER_NAME=user-api
-# BACKEND_CLIENT_ID=demo-resourceserver
-# FRONTEND_CLIENT_ID=demo-client
-# BACKEND_CLIENT_SECRET=$(uuidgen)
-# FRONTEND_CLIENT_SECRET=$(uuidgen)
-# REDIRECT_URIS=http://localhost:8081/gettoken
+KEYCLOAK_HOST=keycloak
+KEYCLOAK_URL=http://$KEYCLOAK_HOST:$KEYCLOAK_HTTP_PORT
+KEYCLOAK_CLIENT_ID=admin-cli
+KEYCLOAK_REALM_NAME=master
+USER_NAME="user-api"
+USER_EMAIL="user-api@example.com"
+USER_FIRST_NAME="user"
+USER_LAST_NAME="api"
+USER_PASSWORD="password"
 
-KC_BIN_DIR="${HOME}/.keycloak/keycloak-15.0.2/bin"
-REALM_NAME=auth-hands-on-api
-USER_NAME=user-api
-BACKEND_CLIENT_ID=auth-hands-on-api
-FRONTEND_CLIENT_ID=auth-hands-on-client
-BACKEND_CLIENT_SECRET=$(uuidgen)
-FRONTEND_CLIENT_SECRET=$(uuidgen)
-REDIRECT_URIS=http://localhost:2222/gettoken
+# Function to wait for Keycloak to start
+wait_for_keycloak() {
+    echo "Waiting for Keycloak to start... ($KEYCLOAK_URL)"
+    until curl -s ${KEYCLOAK_URL}; do
+        sleep 5
+    done
+}
 
+# Function to get access token
+get_access_token() {
+    echo "Logging into Keycloak as admin..."
+    ACCESS_TOKEN=$(curl -d "client_id=$KEYCLOAK_CLIENT_ID" -d "username=$KEYCLOAK_ADMIN" -d "password=$KEYCLOAK_ADMIN_PASSWORD" -d "grant_type=password" "$KEYCLOAK_URL/realms/$KEYCLOAK_REALM_NAME/protocol/openid-connect/token" | jq -r '.access_token')
+    if [ -z "$ACCESS_TOKEN" ] || [ "$ACCESS_TOKEN" == "null" ]; then
+        echo "Failed to get access token"
+        exit 1
+    fi
+    echo "Logged in successfully."
+}
+
+# Function to check if realm exists and delete it
+delete_realm_if_exists() {
+    REALM_EXISTS=$(curl -s -H "Authorization: Bearer $ACCESS_TOKEN" "$KEYCLOAK_URL/admin/realms" | jq -r --arg REALM_NAME "$REALM_NAME" '.[] | select(.realm == $REALM_NAME) | .realm')
+    if [ "$REALM_EXISTS" == "$REALM_NAME" ]; then
+        echo "Realm $REALM_NAME exists. Deleting realm..."
+        curl -s -X DELETE "$KEYCLOAK_URL/admin/realms/$REALM_NAME" \
+            -H "Authorization: Bearer $ACCESS_TOKEN"
+        echo "Realm $REALM_NAME deleted."
+    else
+        echo "Realm $REALM_NAME does not exist."
+    fi
+}
+
+# Function to create realm
+create_realm() {
+    curl -s -X POST -H "Authorization: Bearer $ACCESS_TOKEN" -H "Content-Type: application/json" "$KEYCLOAK_URL/admin/realms" -d "$(jq -n --arg realm "$REALM_NAME" '{realm: $realm, enabled: true}')"
+    echo "Realm created: $REALM_NAME"
+}
+
+# Function to create client
+create_client() {
+    local clientId=$1
+    local clientConfig=$2
+    curl -s -X POST "$KEYCLOAK_URL/admin/realms/$REALM_NAME/clients" \
+        -H "Content-Type: application/json" \
+        -H "Authorization: Bearer $ACCESS_TOKEN" \
+        -d "$clientConfig"
+    echo "Client created: $clientId"
+}
+
+# Function to get client UUID
+get_client_uuid() {
+    local clientId=$1
+    curl -s -X GET "$KEYCLOAK_URL/admin/realms/$REALM_NAME/clients?clientId=$clientId" \
+        -H "Authorization: Bearer $ACCESS_TOKEN" | jq -r '.[0].id'
+}
+
+# Function to set client secret
+set_client_secret() {
+    local clientUuid=$1
+    local bashrcFile=$2
+    local secretVarName=$3
+
+    CLIENT_SECRET=$(curl -s "$KEYCLOAK_URL/admin/realms/$REALM_NAME/clients/$clientUuid/client-secret" \
+        -H "Content-Type: application/json" \
+        -H "Authorization: Bearer $ACCESS_TOKEN" | jq -r '.value')
+
+    sed -i "/export $secretVarName=/d" $bashrcFile
+    echo "export $secretVarName=\"${CLIENT_SECRET}\"" >> $bashrcFile
+}
+
+# Function to create user
+create_user() {
+    local username=$1
+    local email=$2
+    local firstName=$3
+    local lastName=$4
+    local password=$5
+
+    curl -s -X POST "$KEYCLOAK_URL/admin/realms/$REALM_NAME/users" \
+        -H "Content-Type: application/json" \
+        -H "Authorization: Bearer $ACCESS_TOKEN" \
+        -d "$(jq -n --arg username "$username" --arg email "$email" \
+            --arg firstName "$firstName" --arg lastName "$lastName" \
+            '{username: $username, email: $email, firstName: $firstName, lastName: $lastName, enabled: true}')"
+    echo "User created: $username"
+
+    USER_ID=$(curl -s -X GET "$KEYCLOAK_URL/admin/realms/$REALM_NAME/users?username=$username" \
+        -H "Authorization: Bearer $ACCESS_TOKEN" | jq -r '.[0].id')
+
+    curl -s -X PUT "$KEYCLOAK_URL/admin/realms/$REALM_NAME/users/$USER_ID/reset-password" \
+        -H "Content-Type: application/json" \
+        -H "Authorization: Bearer $ACCESS_TOKEN" \
+        -d "$(jq -n --arg password "$password" \
+            '{type: "password", temporary: false, value: $password}')"
+    echo "Password set for user: $username"
+}
+
+# Main script execution
+wait_for_keycloak
+get_access_token
+delete_realm_if_exists
+create_realm
+
+# Creating clients
+create_client "$BACKEND_CLIENT_ID" "$(jq -n --arg clientId "$BACKEND_CLIENT_ID" '{clientId: $clientId, enabled: true, publicClient: false, standardFlowEnabled: false, directAccessGrantsEnabled: false}')"
+create_client "$FRONTEND_CLIENT_ID" "$(jq -n --arg clientId "$FRONTEND_CLIENT_ID" --argjson redirect_uris '["'"$REDIRECT_URIS"'"]' '{clientId: $clientId, enabled: true, redirectUris: $redirect_uris, publicClient: false, consentRequired: true, directAccessGrantsEnabled: false}')"
+
+
+# Retrieving and setting client secrets
 BASHRC_FILE="${HOME}/.bashrc"
+BACKEND_CLIENT_UUID=$(get_client_uuid "$BACKEND_CLIENT_ID")
+FRONTEND_CLIENT_UUID=$(get_client_uuid "$FRONTEND_CLIENT_ID")
 
-sed -i '/export KC_BIN_DIR=/d' $BASHRC_FILE
-sed -i '/export REALM_NAME=/d' $BASHRC_FILE
-sed -i '/export USER_NAME=/d' $BASHRC_FILE
-sed -i '/export BACKEND_CLIENT_ID=/d' $BASHRC_FILE
-sed -i '/export FRONTEND_CLIENT_ID=/d' $BASHRC_FILE
-sed -i '/export BACKEND_CLIENT_SECRET=/d' $BASHRC_FILE
-sed -i '/export FRONTEND_CLIENT_SECRET=/d' $BASHRC_FILE
-sed -i '/export REDIRECT_URIS=/d' $BASHRC_FILE
-
-echo "export KC_BIN_DIR=\"${KC_BIN_DIR}\"" >> $BASHRC_FILE
-echo "export REALM_NAME=\"${REALM_NAME}\"" >> $BASHRC_FILE
-echo "export USER_NAME=\"${USER_NAME}\"" >> $BASHRC_FILE
-echo "export BACKEND_CLIENT_ID=\"${BACKEND_CLIENT_ID}\"" >> $BASHRC_FILE
-echo "export FRONTEND_CLIENT_ID=\"${FRONTEND_CLIENT_ID}\"" >> $BASHRC_FILE
-echo "export BACKEND_CLIENT_SECRET=\"${BACKEND_CLIENT_SECRET}\"" >> $BASHRC_FILE
-echo "export FRONTEND_CLIENT_SECRET=\"${FRONTEND_CLIENT_SECRET}\"" >> $BASHRC_FILE
-echo "export REDIRECT_URIS=\"${REDIRECT_URIS}\"" >> $BASHRC_FILE
-
-source $BASHRC_FILE
-
-cd "${KC_BIN_DIR}"
-
-./standalone.sh &
-
-echo "Waiting for Keycloak to start..."
-
-until curl -s http://localhost:8080/auth; do
-    sleep 5
-done
-
-# Logging into Keycloak as admin...
-./kcadm.sh config credentials --server http://localhost:8080/auth --realm master --user "${KEYCLOAK_ADMIN}" --password "${KEYCLOAK_ADMIN_PASSWORD}"
-echo "Logged in successfully."
-
-REALM_EXISTS=$(./kcadm.sh get realms | jq -r --arg REALM_NAME "$REALM_NAME" '.[] | select(.realm == $REALM_NAME) | .realm')
-
-if [ "$REALM_EXISTS" == "$REALM_NAME" ]; then
-    echo "Realm $REALM_NAME exists. Deleting realm..."
-    ./kcadm.sh delete realms/$REALM_NAME
-    echo "Realm $REALM_NAME deleted."
-else
-    echo "Realm $REALM_NAME does not exist."
-fi
-
-# Creating realm
-./kcadm.sh create realms -s realm=$REALM_NAME -s enabled=true
-echo "Realm created: $REALM_NAME"
-
-# Creating client
-./kcadm.sh create clients -r $REALM_NAME -s clientId=$BACKEND_CLIENT_ID -s enabled=true -s publicClient=false -s standardFlowEnabled=false -s directAccessGrantsEnabled=false
-./kcadm.sh create clients -r $REALM_NAME -s clientId=$FRONTEND_CLIENT_ID -s enabled=true -s publicClient=false -s 'redirectUris=["'"$REDIRECT_URIS"'"]' -s consentRequired=true -s directAccessGrantsEnabled=false
-
-echo "Backend Client created: $BACKEND_CLIENT_ID"
-echo "Frontend Client created: $FRONTEND_CLIENT_ID"
+set_client_secret "$BACKEND_CLIENT_UUID" "$BASHRC_FILE" "BACKEND_CLIENT_SECRET"
+set_client_secret "$FRONTEND_CLIENT_UUID" "$BASHRC_FILE" "FRONTEND_CLIENT_SECRET"
 
 # Creating user
-EMAIL=user-api@example.com
-PASSWORD="password"
+create_user "$USER_NAME" "$USER_EMAIL" "$USER_FIRST_NAME" "$USER_LAST_NAME" "$USER_PASSWORD"
 
-./kcadm.sh create users -s username=$USER_NAME -s email=$EMAIL -s enabled=true -s emailVerified=true -r $REALM_NAME
-./kcadm.sh set-password -r $REALM_NAME --username $USER_NAME --new-password $PASSWORD -t
+echo "Keycloak configuration completed successfully."
 
-echo "User created: $USER_NAME"
 
-# Retrieving client UUID for client
-BACKEND_CLIENT_UUID=$(./kcadm.sh get clients -r $REALM_NAME -q clientId=$BACKEND_CLIENT_ID | jq -r '.[] | select(.clientId == "'$BACKEND_CLIENT_ID'") | .id')
-FRONTEND_CLIENT_UUID=$(./kcadm.sh get clients -r $REALM_NAME -q clientId=$FRONTEND_CLIENT_ID | jq -r '.[] | select(.clientId == "'$FRONTEND_CLIENT_ID'") | .id')
-
-echo "Backend Client UUID: $BACKEND_CLIENT_UUID"
-echo "Frontend Client UUID: $FRONTEND_CLIENT_UUID"
-
-# Updating client secret for client UUID
-./kcadm.sh update clients/$BACKEND_CLIENT_UUID -r $REALM_NAME -s "secret=$BACKEND_CLIENT_SECRET"
-./kcadm.sh update clients/$FRONTEND_CLIENT_UUID -r $REALM_NAME -s "secret=$FRONTEND_CLIENT_SECRET"
-
-./kcadm.sh get clients/$BACKEND_CLIENT_UUID/client-secret -r $REALM_NAME
-./kcadm.sh get clients/$FRONTEND_CLIENT_UUID/client-secret -r $REALM_NAME
-
-echo "Stopping Keycloak server..."
-
-PID=$(lsof -t -i:8080)
-
-kill -9 $PID
 
 
 
