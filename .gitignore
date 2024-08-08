@@ -1,6 +1,8 @@
 # devcontainer
 .devcontainer/.env
 .docker/
+.devcontainer/docker/keycloak/realms/*
+!.devcontainer/docker/keycloak/realms/.gitkeep
 
 # git
 temp/
