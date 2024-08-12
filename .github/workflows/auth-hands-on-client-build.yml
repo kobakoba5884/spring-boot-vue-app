@@ -1,0 +1,28 @@
+name: auth-hands-on-client-build
+
+on:
+  pull_request:
+    branches: ["**"]
+    paths:
+      - "auth-hands-on/auth-hands-on-client/**"
+
+jobs:
+  build:
+    name: build
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout the latest code
+        uses: actions/checkout@v4.1.7
+
+      - name: Setup Java
+        uses: actions/setup-java@v4.2.2
+        with:
+          distribution: corretto
+          java-version: 17
+          cache: "gradle"
+          cache-dependency-path: |
+            auth-hands-on/auth-hands-on-client/*.gradle*
+            auth-hands-on/auth-hands-on-client/**/gradle-wrapper.properties
+
+      - name: Build the project
+        run: cd auth-hands-on/auth-hands-on-client && ./gradlew build --no-daemon
