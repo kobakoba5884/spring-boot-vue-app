@@ -90,7 +90,5 @@ services:
       FRONTEND_CLIENT_SECRET: ${FRONTEND_CLIENT_SECRET:-sample-secret}
       REDIRECT_URIS: ${REDIRECT_URIS:-http://localhost:2222/gettoken}
       ORIGIN_URIS: ${ORIGIN_URIS:-http://localhost:2222}
-    volumes:
-      - .devcontainer/docker/keycloak/realms:/opt/bitnami/keycloak/data/import
     depends_on:
       - postgres

@@ -14,5 +14,5 @@ node_modules
 # backend
 build/
 .gradle
-
+gradle
 keycloak-book-jp/
