@@ -28,4 +28,4 @@ jobs:
         run: chmod +x ./auth-hands-on/auth-hands-on-api/gradlew
 
       - name: Build the project
-        run: ./auth-hands-on/auth-hands-on-api/gradlew build --no-daemon
+        run: cd auth-hands-on/auth-hands-on-api && ./gradlew build --no-daemon
