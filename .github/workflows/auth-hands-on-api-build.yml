@@ -23,9 +23,6 @@ jobs:
           cache-dependency-path: |
             auth-hands-on/auth-hands-on-api/*.gradle*
             auth-hands-on/auth-hands-on-api/**/gradle-wrapper.properties
-      
-      - name: Grant execute permission to gradlew
-        run: chmod +x ./auth-hands-on/auth-hands-on-api/gradlew
-
+            
       - name: Build the project
         run: cd auth-hands-on/auth-hands-on-api && ./gradlew build --no-daemon
