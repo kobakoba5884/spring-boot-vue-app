@@ -1,0 +1,26 @@
+name: build-and-test
+
+on:
+  push:
+    branches: [ "main" ]
+    paths:
+      - "auth-hands-on/auth-hands-on-api/**"
+
+jobs:
+  build:
+    name: build
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout the latest code
+        uses: actions/checkout@v4.1.7
+
+      - name: Setup Java
+        uses: actions/setup-java@v4.2.2
+        with:
+          distribution: corretto
+          java-version: 17
+          cache: 'gradle'
+          cache-dependency-path: |
+            auth-hands-on/auth-hands-on-api/*.gradle*
+            auth-hands-on/auth-hands-on-api/**/gradle-wrapper.properties
+      - run: ./gradlew build --no-daemon
