@@ -2,9 +2,6 @@ package com.minmin.authHandsOnClient.controllers
 
 import com.minmin.authHandsOnClient.dtos.ClientSession
 import com.minmin.authHandsOnClient.dtos.TokenResponse
-import java.net.URI
-import java.net.URLEncoder
-import java.nio.charset.Charset
 import org.springframework.http.HttpHeaders
 import org.springframework.http.HttpMethod
 import org.springframework.http.MediaType
@@ -22,6 +19,9 @@ import org.springframework.web.client.ResourceAccessException
 import org.springframework.web.client.RestTemplate
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder
 import org.springframework.web.util.UriComponentsBuilder
+import java.net.URI
+import java.net.URLEncoder
+import java.nio.charset.Charset
 
 @Controller
 class TokenIntrospectionController(val clientSession: ClientSession) {
@@ -32,21 +32,21 @@ class TokenIntrospectionController(val clientSession: ClientSession) {
 
     @PostMapping("/auth")
     fun auth(
-            @RequestParam(name = "scope", required = false) scope: String?,
+        @RequestParam(name = "scope", required = false) scope: String?,
     ): String {
         clientSession.scope = scope
 
         val authorizationUrl =
-                UriComponentsBuilder.fromUriString(
-                        "http://localhost:8080/realms/auth-hands-on/protocol/openid-connect/auth",
-                )
+            UriComponentsBuilder.fromUriString(
+                "http://localhost:8080/realms/auth-hands-on/protocol/openid-connect/auth",
+            )
         val params = LinkedMultiValueMap<String, String>()
         val charset = Charset.defaultCharset().toString()
         var redirectUrl =
-                ServletUriComponentsBuilder.fromCurrentRequest()
-                        .replacePath("/gettoken")
-                        .replaceQuery(null)
-                        .toUriString()
+            ServletUriComponentsBuilder.fromCurrentRequest()
+                .replacePath("/gettoken")
+                .replaceQuery(null)
+                .toUriString()
         redirectUrl = URLEncoder.encode(redirectUrl, charset)
         params.add("redirect_uri", redirectUrl)
         params.add("response_type", "code")
@@ -63,10 +63,10 @@ class TokenIntrospectionController(val clientSession: ClientSession) {
 
     @GetMapping("/gettoken")
     fun getToken(
-            @RequestParam(name = "code", required = false) code: String,
-            @RequestParam(name = "error", required = false) error: String?,
-            @RequestParam(name = "error_description", required = false) errorDescription: String?,
-            model: Model,
+        @RequestParam(name = "code", required = false) code: String,
+        @RequestParam(name = "error", required = false) error: String?,
+        @RequestParam(name = "error_description", required = false) errorDescription: String?,
+        model: Model,
     ): String {
         if (error != null) {
             model.addAttribute("error", error)
@@ -81,10 +81,10 @@ class TokenIntrospectionController(val clientSession: ClientSession) {
 
         // val charset = Charset.defaultCharset().toString()
         var redirectUrl =
-                ServletUriComponentsBuilder.fromCurrentRequest()
-                        .replacePath("/gettoken")
-                        .replaceQuery(null)
-                        .toUriString()
+            ServletUriComponentsBuilder.fromCurrentRequest()
+                .replacePath("/gettoken")
+                .replaceQuery(null)
+                .toUriString()
         // redirectUrl = URLEncoder.encode(redirectUrl, charset)
         val params = LinkedMultiValueMap<String, String>()
         params.add("code", code)
@@ -92,19 +92,19 @@ class TokenIntrospectionController(val clientSession: ClientSession) {
         params.add("redirect_uri", redirectUrl)
 
         val req =
-                RequestEntity<Any>(
-                        params,
-                        headers,
-                        HttpMethod.POST,
-                        URI.create(
-                                "http://keycloak:8080/realms/auth-hands-on/protocol/openid-connect/token",
-                        ),
-                )
+            RequestEntity<Any>(
+                params,
+                headers,
+                HttpMethod.POST,
+                URI.create(
+                    "http://keycloak:8080/realms/auth-hands-on/protocol/openid-connect/token",
+                ),
+            )
         var token: TokenResponse? = null
-        
+
         try {
             val res: ResponseEntity<TokenResponse> =
-                    RestTemplate().exchange(req, TokenResponse::class.java)
+                RestTemplate().exchange(req, TokenResponse::class.java)
             token = res.body
         } catch (e: HttpStatusCodeException) {
             TokenResponse.withError(e.message, e.getResponseBodyAsString())
@@ -125,11 +125,11 @@ class TokenIntrospectionController(val clientSession: ClientSession) {
     fun callHealth(model: Model): String? {
         val headers = HttpHeaders()
         val req =
-                RequestEntity<String>(
-                        headers,
-                        HttpMethod.GET,
-                        URI.create("http://localhost:8888/token-introspection/health"),
-                )
+            RequestEntity<String>(
+                headers,
+                HttpMethod.GET,
+                URI.create("http://localhost:8888/token-introspection/health"),
+            )
 
         val res = RestTemplate().exchange(req, String::class.java)
         val response = res.getBody()
