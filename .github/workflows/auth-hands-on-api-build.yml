@@ -1,8 +1,8 @@
-name: build-and-test
+name: auth-hands-on-api-build
 
 on:
-  push:
-    branches: [ "main" ]
+  pull_request:
+    branches: [ "**" ]
     paths:
       - "auth-hands-on/auth-hands-on-api/**"
 
@@ -23,4 +23,6 @@ jobs:
           cache-dependency-path: |
             auth-hands-on/auth-hands-on-api/*.gradle*
             auth-hands-on/auth-hands-on-api/**/gradle-wrapper.properties
-      - run: ./gradlew build --no-daemon
+            
+      - name: Build the project
+        run: cd auth-hands-on/auth-hands-on-api && ./gradlew build --no-daemon
