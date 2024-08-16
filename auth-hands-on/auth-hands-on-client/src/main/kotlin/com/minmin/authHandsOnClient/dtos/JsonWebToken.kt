@@ -29,7 +29,7 @@ open class JsonWebToken(
             clazz: KClass<T>,
         ): T? {
             val parts = str.split(".")
-            if (parts.size < 2 || parts.size > 3) throw RuntimeException()
+            if (parts.size < 2 || parts.size > 3) return null
 
             val jwt = JsonUtil.unmarshal(Base64UrlUtil.decode(parts[1]), clazz.java)
             jwt.header = JsonUtil.unmarshal(Base64UrlUtil.decode(parts[0]), Header::class.java)

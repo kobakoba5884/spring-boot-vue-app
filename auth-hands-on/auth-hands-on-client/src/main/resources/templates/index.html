@@ -12,6 +12,11 @@
         <h2>Token Ops</h2>
             <form method="POST">
                 <div>
+                    <label for="scope">scope</label>
+                    <input id="scope" type="text" name="scope"
+                        th:value="${@clientSession?.getScope()}">
+                </div>
+                <div>
                     <input type="submit" value="Get Token" th:formaction="@{/auth}" />
                 </div>
             </form>
