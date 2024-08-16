@@ -4,4 +4,6 @@ import com.fasterxml.jackson.databind.PropertyNamingStrategies
 import com.fasterxml.jackson.databind.annotation.JsonNaming
 
 @JsonNaming(PropertyNamingStrategies.SnakeCaseStrategy::class)
-class IdToken(val nonce: String?) : JsonWebToken()
+class IdToken() : JsonWebToken() {
+    var nonce: String? = null
+}

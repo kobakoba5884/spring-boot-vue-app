@@ -58,8 +58,8 @@ class TokenIntrospectionService(
             return token
         }
 
-        if (oauthConfig.nonce) {
-            val idToken = token?.idToken?.let { JsonWebToken.parse(it, IdToken::class) }
+        if (oauthConfig.nonce && token?.idToken != null) {
+            val idToken = token.idToken?.let { JsonWebToken.parse(it, IdToken::class) }
 
             if (idToken?.nonce == null || !idToken.nonce.equals(clientSession.nonce)) {
                 return TokenResponse.withError("nonce check NG", null)

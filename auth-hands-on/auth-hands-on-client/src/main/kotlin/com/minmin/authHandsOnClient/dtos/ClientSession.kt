@@ -19,5 +19,6 @@ data class ClientSession(
     fun setTokensFromTokenResponse(response: TokenResponse?) {
         this.accessToken = JsonWebToken.parse(response?.accessToken ?: "", AccessToken::class)
         this.refreshToken = JsonWebToken.parse(response?.refreshToken ?: "", RefreshToken::class)
+        this.idToken = JsonWebToken.parse(response?.idToken ?: "", IdToken::class)
     }
 }
