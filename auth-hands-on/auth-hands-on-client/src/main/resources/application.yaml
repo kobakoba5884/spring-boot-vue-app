@@ -3,3 +3,18 @@ spring:
     name: auth-hans-on-client
 server:
   port: 2222
+clientapp:
+  config:
+    apiserver-url: "http://localhost:8888"
+    authorization-endpoint: "http://localhost:8080/realms/auth-hands-on/protocol/openid-connect/auth"
+    token-endpoint: "http://keycloak:8080/realms/auth-hands-on/protocol/openid-connect/token"
+    revoke-endpoint: "http://localhost:8080/realms/auth-hands-on/protocol/openid-connect/revoke"
+    client-id: "${FRONTEND_CLIENT_ID:your-client-id}"
+    client-secret: "${FRONTEND_CLIENT_SECRET:your-client-secret}"
+    scope: "your-scope"
+oauth:
+  config:
+    state: true
+    nonce: true
+    pkce: true
+    formPost: false
