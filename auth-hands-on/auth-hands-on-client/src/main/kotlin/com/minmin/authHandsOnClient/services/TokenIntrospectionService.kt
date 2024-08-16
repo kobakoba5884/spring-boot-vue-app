@@ -7,10 +7,6 @@ import com.minmin.authHandsOnClient.dtos.IdToken
 import com.minmin.authHandsOnClient.dtos.JsonWebToken
 import com.minmin.authHandsOnClient.dtos.TokenResponse
 import com.minmin.authHandsOnClient.utils.OauthUtil
-import java.net.URI
-import java.net.URLEncoder
-import java.nio.charset.Charset
-import java.util.UUID
 import org.springframework.http.HttpHeaders
 import org.springframework.http.HttpMethod
 import org.springframework.http.MediaType
@@ -23,26 +19,30 @@ import org.springframework.web.client.ResourceAccessException
 import org.springframework.web.client.RestTemplate
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder
 import org.springframework.web.util.UriComponentsBuilder
+import java.net.URI
+import java.net.URLEncoder
+import java.nio.charset.Charset
+import java.util.UUID
 
 @Service
 class TokenIntrospectionService(
-        val clientSession: ClientSession,
-        val clientConfig: ClientAppConfiguration,
-        val oauthConfig: OauthConfiguration,
+    val clientSession: ClientSession,
+    val clientConfig: ClientAppConfiguration,
+    val oauthConfig: OauthConfiguration,
 ) {
     private val charset = Charset.defaultCharset().toString()
 
     fun buildAuthorizationUrl(scope: String?): String {
         val authorizationUrl =
-                UriComponentsBuilder.fromUriString(clientConfig.authorizationEndpoint)
+            UriComponentsBuilder.fromUriString(clientConfig.authorizationEndpoint)
         val params = buildAuthrizationParams(scope)
 
         return authorizationUrl.queryParams(params).build(true).toUriString()
     }
 
     fun processAuthorizationCodeGrant(
-            code: String,
-            state: String?,
+        code: String,
+        state: String?,
     ): TokenResponse? {
         if (oauthConfig.state) {
             state?.takeIf { !it.equals(clientSession.state) }?.let {
@@ -107,14 +107,14 @@ class TokenIntrospectionService(
     }
 
     private fun buildRedirectUri(
-            replacePath: String,
-            isEncode: Boolean = false,
+        replacePath: String,
+        isEncode: Boolean = false,
     ): String {
         return ServletUriComponentsBuilder.fromCurrentRequest()
-                .replacePath(replacePath)
-                .replaceQuery(null)
-                .toUriString()
-                .let { if (isEncode) URLEncoder.encode(it, charset) else it }
+            .replacePath(replacePath)
+            .replaceQuery(null)
+            .toUriString()
+            .let { if (isEncode) URLEncoder.encode(it, charset) else it }
     }
 
     private fun requestToken(authorizationCode: String): TokenResponse? {
@@ -133,18 +133,18 @@ class TokenIntrospectionService(
         }
 
         val req =
-                RequestEntity<Any>(
-                        params,
-                        headers,
-                        HttpMethod.POST,
-                        URI.create(
-                                clientConfig.tokenEndpoint,
-                        ),
-                )
+            RequestEntity<Any>(
+                params,
+                headers,
+                HttpMethod.POST,
+                URI.create(
+                    clientConfig.tokenEndpoint,
+                ),
+            )
 
         try {
             val res: ResponseEntity<TokenResponse> =
-                    RestTemplate().exchange(req, TokenResponse::class.java)
+                RestTemplate().exchange(req, TokenResponse::class.java)
             return res.body
         } catch (e: HttpStatusCodeException) {
             return TokenResponse.withError(e.message, e.getResponseBodyAsString())
